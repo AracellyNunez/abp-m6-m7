@@ -1,0 +1,10 @@
+[24-08-2026, 9:57:58 p. m.] - ACCIÓN: CREAR_PACIENTE | DETALLE: Se registró exitosamente el paciente aracelly Núñez Núñez con RUT 18.174.000-0
+[24-08-2026, 9:59:24 p. m.] - ACCIÓN: ACTUALIZAR_PACIENTE | DETALLE: Se actualizó el paciente con ID 22006 (Rachel Solis)
+[24-08-2026, 9:59:44 p. m.] - ACCIÓN: ACTUALIZAR_PACIENTE | DETALLE: Se actualizó el paciente con ID 22005 (Mara Montoya)
+[24-08-2026, 10:00:09 p. m.] - ACCIÓN: ACTUALIZAR_PACIENTE | DETALLE: Se actualizó el paciente con ID 22004 (Esteban Morales)
+[24-08-2026, 10:04:56 p. m.] - ACCIÓN: ACTUALIZAR_PACIENTE | DETALLE: Se actualizó el paciente con ID 22001 (María González)
+[24-08-2026, 10:05:16 p. m.] - ACCIÓN: ACTUALIZAR_PACIENTE | DETALLE: Se actualizó el paciente con ID 22005 (Mara Montoya)
+[24-08-2026, 10:05:35 p. m.] - ACCIÓN: ACTUALIZAR_PACIENTE | DETALLE: Se actualizó el paciente con ID 22005 (Mara Montoya)
+[24-08-2026, 11:03:36 p. m.] - ACCIÓN: ACTUALIZAR_PACIENTE | DETALLE: Se actualizó el paciente con ID 22007 (Aracelly Núñez Núñez)
+[24-08-2026, 11:04:09 p. m.] - ACCIÓN: CREAR_PACIENTE | DETALLE: Se registró exitosamente el paciente Lucas Nuñez con RUT 22.222.333-9
+[24-08-2026, 11:04:22 p. m.] - ACCIÓN: ELIMINAR_PACIENTE | DETALLE: Se eliminó el paciente con ID N°: 22008

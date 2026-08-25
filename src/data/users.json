@@ -1,0 +1,53 @@
+{
+    "users": [
+        {
+            "firstname": "María",
+            "lastname": "González",
+            "email": "maria.gonzalez@yahoo.com",
+            "rut": "15.432.876-K",
+            "id": 22001
+        },
+        {
+            "firstname": "Carlos",
+            "lastname": "Soto",
+            "rut": "18.912.345-3",
+            "email": "carlos.soto.med@gmail.com",
+            "id": 22002
+        },
+        {
+            "firstname": "Ana",
+            "lastname": "Valenzuela",
+            "rut": "12.345.678-9",
+            "email": "anavalenzuela@yahoo.com",
+            "id": 22003
+        },
+        {
+            "firstname": "Esteban",
+            "lastname": "Morales",
+            "email": "esteban.morales@yahoo.com",
+            "rut": "19.876.543-1",
+            "id": 22004
+        },
+        {
+            "firstname": "Mara",
+            "lastname": "Montoya",
+            "email": "mara.1993@gmail.com",
+            "rut": "14.222.333-4",
+            "id": 22005
+        },
+        {
+            "firstname": "Rachel",
+            "lastname": "Solis",
+            "email": "kuvuzu@hotmail.com",
+            "rut": "16.777.888-9",
+            "id": 22006
+        },
+        {
+            "firstname": "Aracelly",
+            "lastname": "Núñez Núñez",
+            "email": "nunezaracelly@gmail.com",
+            "rut": "18.174.000-0",
+            "id": 22007
+        }
+    ]
+}
