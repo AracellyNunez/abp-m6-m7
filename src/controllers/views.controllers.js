@@ -7,35 +7,45 @@ export const homeView = (req, res) => {
     } catch (error) {
         res.status(500).send("Error en cargar vista...");
     }
-}
+};
 
-export const usersView = (req, res) => {
+export const usersView = async (req, res) => {
     try {
-
-        const users = User.findAll();
+        // Obtenemos todos los usuarios desde PostgreSQL con Sequelize
+        const usersData = await User.findAll({
+            attributes: { exclude: ["password"] },
+            raw: true // Esto transforma el resultado en objetos planos que Handlebars lee sin atados
+        });
 
         res.render("listUsers", {
-            users
+            users: usersData
         });
     } catch (error) {
+        console.log(error);
         res.status(500).send("Error en cargar vista...");
     }
-}
-
+};
 
 export const usersAddView = (req, res) => {
     try {
         res.render("addUsers");
-
     } catch (error) {
         res.status(500).send("Error en cargar vista...");
     }
-}
+};
 
-export const usersUpdateView = (req, res) => {
+export const usersUpdateView = async (req, res) => {
     try {
         let { id } = req.params;
-        let user = User.findById(id);
+        // Usamos findByPk para buscar por llave primaria en Sequelize
+        const user = await User.findByPk(id, {
+            attributes: { exclude: ["password"] },
+            raw: true
+        });
+
+        if (!user) {
+            return res.status(404).send("Usuario no encontrado para actualizar.");
+        }
 
         res.render("updateUser", {
             user,
@@ -43,14 +53,18 @@ export const usersUpdateView = (req, res) => {
         });
 
     } catch (error) {
+        console.log(error);
         res.status(500).send("Error en cargar vista...");
     }
-}
+};
 
-export const userProfileView = (req, res) => {
+export const userProfileView = async (req, res) => {
     try {
         const { id } = req.params;
-        const user = User.findById(id);
+        const user = await User.findByPk(id, {
+            attributes: { exclude: ["password"] },
+            raw: true
+        });
 
         if (!user) {
             return res.status(404).send("Paciente no encontrado en el sistema.");
@@ -60,8 +74,7 @@ export const userProfileView = (req, res) => {
             user
         });
     } catch (error) {
+        console.log(error);
         res.status(500).send("Error al cargar la ficha clínica del paciente...");
     }
-}
-
-
+};

@@ -5,14 +5,20 @@ if (formAddUser) {
         try {
             event.preventDefault();
 
+            // Capturamos los valores usando getElementById para asegurar que los encuentre
+            const firstname = document.getElementById("firstname").value;
+            const lastname = document.getElementById("lastname").value;
+            const rut = document.getElementById("rut").value;
+            const email = document.getElementById("email").value;
+
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
 
             const raw = JSON.stringify({
-                firstname: firstname.value,
-                lastname: lastname.value,
-                rut: rut.value, 
-                email: email.value,
+                firstname: firstname,
+                lastname: lastname,
+                rut: rut, 
+                email: email,
             });
 
             const requestOptions = {
@@ -36,7 +42,7 @@ if (formAddUser) {
             formAddUser.reset();
 
             setTimeout(() => {
-                location.href = "/users";
+                location.href = "/users"; // O la ruta de vista que tengas configurada
             }, 1500);
         } catch (error) {
             console.log(error);

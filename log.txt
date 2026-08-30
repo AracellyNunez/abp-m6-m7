@@ -8,3 +8,6 @@
 [24-08-2026, 11:03:36 p. m.] - ACCIÓN: ACTUALIZAR_PACIENTE | DETALLE: Se actualizó el paciente con ID 22007 (Aracelly Núñez Núñez)
 [24-08-2026, 11:04:09 p. m.] - ACCIÓN: CREAR_PACIENTE | DETALLE: Se registró exitosamente el paciente Lucas Nuñez con RUT 22.222.333-9
 [24-08-2026, 11:04:22 p. m.] - ACCIÓN: ELIMINAR_PACIENTE | DETALLE: Se eliminó el paciente con ID N°: 22008
+[25-08-2026, 12:15:21 a. m.] - ACCIÓN: CREAR_PACIENTE | DETALLE: Se registró exitosamente el paciente Lucas cat con RUT 22.222.222-0
+[25-08-2026, 12:15:34 a. m.] - ACCIÓN: ACTUALIZAR_PACIENTE | DETALLE: Se actualizó el paciente con ID 22008 (Lucas Nuñez)
+[25-08-2026, 12:16:15 a. m.] - ACCIÓN: ELIMINAR_PACIENTE | DETALLE: Se eliminó el paciente con ID N°: 22008

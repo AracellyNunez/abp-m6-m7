@@ -3,26 +3,29 @@ import chalk from "chalk";
 
 const log = {
     error: (msg) => console.log(chalk.red(msg))
-}
+};
 
-export const findAll = (req, res) => {
+export const findAll = async (req, res) => {
     try {
-        const users = User.findAll();
+        const users = await User.findAll({
+            attributes: { exclude: ["password"] }
+        });
 
         res.json({ users });
     } catch (error) {
         log.error(error.message);
         res.status(500).json({
-            message:
-                "Error al intentar obtener los datos de los usuarios, intente más tarde...",
+            message: "Error al intentar obtener los datos de los usuarios, intente más tarde...",
         });
     }
 };
 
-export const findById = (req, res) => {
+export const findById = async (req, res) => {
     try {
         let { id } = req.params;
-        const usuario = User.findById(id);
+        const usuario = await User.findByPk(id, {
+            attributes: { exclude: ["password"] }
+        });
 
         if (!usuario) {
             return res.status(404).json({ message: "Usuario no encontrado." });
@@ -37,10 +40,13 @@ export const findById = (req, res) => {
     }
 };
 
-export const findByEmail = (req, res) => {
+export const findByEmail = async (req, res) => {
     try {
         let { email } = req.params;
-        const usuario = User.findByEmail(email);
+        const usuario = await User.findOne({
+            where: { email },
+            attributes: { exclude: ["password"] }
+        });
 
         if (!usuario) {
             return res.status(404).json({ message: "Usuario no encontrado." });
@@ -55,72 +61,86 @@ export const findByEmail = (req, res) => {
     }
 };
 
-export const create = (req, res) => {
+export const create = async (req, res) => {
     try {
-        let { firstname, lastname, email, rut } = req.body;
+        let { firstName, lastname, firstname, email, rut, password } = req.body;
 
-        if (!firstname || !lastname || !email || !rut) {
+        // Compatibilidad por si el formulario envía firstname en minúscula
+        const fName = firstName || firstname;
+        const lName = lastname || req.body.lastName;
+
+        if (!fName || !lName || !email || !rut) {
             return res.status(400).json({
                 message: "No se proporcionan todos los campos requeridos.",
             });
         }
 
-        const newUser = new User(firstname, lastname, email, rut);
+        const newUser = await User.create({
+            firstName: fName,
+            lastName: lName,
+            email,
+            rut,
+            password: password || "TempPassword123" // Contraseña por defecto si no viene en el form antiguo
+        });
 
-       
-        const savedUser = newUser.save();
+        // Ocultar password en la respuesta
+        const userResponse = newUser.toJSON();
+        delete userResponse.password;
 
-        res.status(201).json({ message: "Usuario creado con éxito", user: savedUser });
+        res.status(201).json({ message: "Usuario creado con éxito", user: userResponse });
     } catch (error) {
-        if (error.code) {
-            return res.status(error.code).json({ message: error.message });
+        console.log(error);
+        if (error.name === "SequelizeUniqueConstraintError") {
+            return res.status(400).json({ message: "El correo o RUT ya se encuentran registrados." });
         }
         res.status(500).json({ message: "Error al intentar guardar el usuario, intente más tarde." });
     }
 };
 
-export const update = (req, res) => {
+export const update = async (req, res) => {
     try {
         let { id } = req.params;
-        let { firstname, lastname, email, rut } = req.body;
+        let { firstName, lastname, firstname, email, rut } = req.body;
 
-        const user = User.findById(id);
+        const fName = firstName || firstname;
+        const lName = lastname || req.body.lastName;
+
+        const user = await User.findByPk(id);
 
         if (!user) {
             return res.status(404).json({ message: "Usuario no encontrado." });
         }
 
-        if (firstname) user.firstname = firstname;
-        if (lastname) user.lastname = lastname;
-        if (email) user.email = email;
-        if (rut) user.rut = rut;
+        await user.update({
+            ...(fName && { firstName: fName }),
+            ...(lName && { lastName: lName }),
+            ...(email && { email }),
+            ...(rut && { rut })
+        });
 
-        user.update();
+        const userResponse = user.toJSON();
+        delete userResponse.password;
 
-        res.status(201).json({ message: "Usuario actualizado con éxito.", user });
+        res.status(200).json({ message: "Usuario actualizado con éxito.", user: userResponse });
 
     } catch (error) {
         console.log(error);
-
-        if (error.code) {
-            return res.status(error.code).json({ message: error.message });
-        }
         res.status(500).json({
             message: "Error al intentar actualizar el usuario.",
         });
     }
 };
 
-export const deleteById = (req, res) => {
+export const deleteById = async (req, res) => {
     try {
         let { id } = req.params;
-        const user = User.findById(id);
+        const user = await User.findByPk(id);
 
         if (!user) {
             return res.status(404).json({ message: "Usuario no encontrado." });
         }
 
-        user.delete();
+        await user.destroy();
 
         res.json({ message: "Usuario eliminado con éxito" });
     } catch (error) {
