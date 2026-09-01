@@ -65,7 +65,6 @@ export const create = async (req, res) => {
     try {
         let { firstName, lastname, firstname, email, rut, password } = req.body;
 
-        // Compatibilidad por si el formulario envía firstname en minúscula
         const fName = firstName || firstname;
         const lName = lastname || req.body.lastName;
 
@@ -76,11 +75,11 @@ export const create = async (req, res) => {
         }
 
         const newUser = await User.create({
-            firstName: fName,
-            lastName: lName,
+            firstname: fName,
+            lastname: lName,
             email,
             rut,
-            password: password || "TempPassword123" // Contraseña por defecto si no viene en el form antiguo
+            password: password || "TempPassword123" // Contraseña por defecto 
         });
 
         // Ocultar password en la respuesta

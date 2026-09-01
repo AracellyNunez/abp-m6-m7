@@ -5,7 +5,6 @@ if (formAddUser) {
         try {
             event.preventDefault();
 
-            // Capturamos los valores usando getElementById para asegurar que los encuentre
             const firstname = document.getElementById("firstname").value;
             const lastname = document.getElementById("lastname").value;
             const rut = document.getElementById("rut").value;
@@ -17,7 +16,7 @@ if (formAddUser) {
             const raw = JSON.stringify({
                 firstname: firstname,
                 lastname: lastname,
-                rut: rut, 
+                rut: rut,
                 email: email,
             });
 
@@ -42,7 +41,7 @@ if (formAddUser) {
             formAddUser.reset();
 
             setTimeout(() => {
-                location.href = "/users"; // O la ruta de vista que tengas configurada
+                location.href = "/users"; 
             }, 1500);
         } catch (error) {
             console.log(error);

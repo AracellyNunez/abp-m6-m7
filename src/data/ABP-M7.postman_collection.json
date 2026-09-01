@@ -1,0 +1,182 @@
+{
+  "info": {
+    "_postman_id": "e401f77a-6f34-459d-a0ec-59f66ff5540d",
+    "name": "ABP-M7",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "56963879",
+    "_collection_link": "https://go.postman.co/collection/56963879-e401f77a-6f34-459d-a0ec-59f66ff5540d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Verificar Servidor",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3001",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Users",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "firstName",
+              "value": "Luas",
+              "type": "text",
+              "uuid": "a8dc3bb3-1db3-47fc-82bc-7962f2f3f1fb"
+            },
+            {
+              "key": "lastName",
+              "value": "Núñez",
+              "type": "text",
+              "uuid": "f08d089c-cb89-4071-944b-40a61fd50b2b"
+            },
+            {
+              "key": "rut",
+              "value": "5.998.998.5",
+              "type": "text",
+              "uuid": "0d05df74-4144-4e46-b6e3-e76f63c88bd8"
+            },
+            {
+              "key": "email",
+              "value": "lucasnunez@hotmail.com",
+              "type": "text",
+              "uuid": "f09e0ec2-e417-4d8f-823b-ab6a4837b132"
+            },
+            {
+              "key": "password",
+              "value": "lucas123",
+              "type": "text",
+              "uuid": "90684843-d4a1-453c-b9b2-6d896c6ef225"
+            },
+            {
+              "key": "",
+              "value": "",
+              "type": "text",
+              "uuid": "404dddb0-439b-47bd-a07b-6655172a1364"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3001/api/users",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001",
+          "path": [
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Listar uasuarios",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3001/api/users",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001",
+          "path": [
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "buscar Usuario por ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3001/api/users/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001",
+          "path": [
+            "api",
+            "users",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Actualizar Usuario",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "email",
+              "value": "perez.juan@yahoo.com",
+              "type": "text",
+              "uuid": "9f73e1aa-7d83-491f-a2c5-12b15ef96af7"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3001/api/users/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001",
+          "path": [
+            "api",
+            "users",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3001/api/users/7",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001",
+          "path": [
+            "api",
+            "users",
+            "7"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

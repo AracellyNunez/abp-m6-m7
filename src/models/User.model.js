@@ -34,7 +34,7 @@ const User = sequelize.define("User", {
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: true, // Lo ponemos en true por si el form antiguo no lo envía
+        allowNull: true, 
         defaultValue: "TempPassword123"
     }
 }, {

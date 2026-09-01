@@ -1,6 +1,6 @@
 import yargs from "yargs";
 import app from "./src/app.js";
-import { User, Ficha } from "./src/models/index.js";
+
 
 const portMin = 3000;
 const portMax = 3010;

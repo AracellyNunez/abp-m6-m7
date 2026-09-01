@@ -1,9 +1,10 @@
-# Gestión de usuarios
+# Gestión de usuarios, fichas y exámenes
 
-Aplicación web desarrollada como entrega de la tarea del módulo 6. Permite administrar usuarios mediante una interfaz web y una API REST construida con Node.js y Express.
+Aplicación web desarrollada como entrega de la tarea del módulo 6 y 7. Permite administrar usuarios, fichas y exámenes mediante una interfaz web y una API REST construida con Node.js, Express y PostgreSQL.
 
 ## Funcionalidades
 
+### Gestión de Usuarios
 - Visualizar la página principal y el listado de usuarios.
 - Registrar nuevos usuarios.
 - Consultar el perfil de un usuario.
@@ -12,6 +13,16 @@ Aplicación web desarrollada como entrega de la tarea del módulo 6. Permite adm
 - Buscar usuarios por ID o correo electrónico.
 - Validar el formato del RUT.
 - Evitar registros con correo electrónico o RUT duplicado.
+
+### Gestión de Fichas
+- Crear fichas asociadas a usuarios.
+- Obtener listado de fichas.
+
+### Gestión de Exámenes
+- Crear exámenes.
+- Obtener listado de exámenes.
+
+### Registro y Logging
 - Registrar las acciones de creación, actualización y eliminación en `log.txt`.
 
 ## Tecnologías utilizadas
@@ -20,6 +31,8 @@ Aplicación web desarrollada como entrega de la tarea del módulo 6. Permite adm
 - Express 5
 - Express Handlebars
 - Handlebars
+- PostgreSQL
+- Sequelize (ORM)
 - Yargs
 - UUID
 - Moment
@@ -86,6 +99,8 @@ El puerto indicado debe estar entre `3000` y `3010`.
 
 ## API REST
 
+### Usuarios
+
 La API utiliza el prefijo `/api/users`.
 
 | Método | Ruta | Descripción |
@@ -96,6 +111,24 @@ La API utiliza el prefijo `/api/users`.
 | `POST` | `/api/users` | Crear un usuario |
 | `PUT` | `/api/users/:id` | Actualizar un usuario |
 | `DELETE` | `/api/users/:id` | Eliminar un usuario |
+
+### Fichas
+
+La API utiliza el prefijo `/api/fichas`.
+
+| Método | Ruta | Descripción |
+| --- | --- | --- |
+| `GET` | `/api/fichas` | Obtener todas las fichas |
+| `POST` | `/api/fichas` | Crear una ficha |
+
+### Exámenes
+
+La API utiliza el prefijo `/api/examenes`.
+
+| Método | Ruta | Descripción |
+| --- | --- | --- |
+| `GET` | `/api/examenes` | Obtener todos los exámenes |
+| `POST` | `/api/examenes` | Crear un examen |
 
 ### Body para crear o actualizar
 
@@ -118,10 +151,22 @@ curl http://localhost:3000/api/users
 
 ## Persistencia de datos
 
-Los usuarios se almacenan localmente en:
+Los datos se almacenan en una base de datos PostgreSQL configurada con Sequelize como ORM.
+
+Configuración de la base de datos:
 
 ```text
-src/data/users.json
+src/config/db.js
+```
+
+Modelos de datos:
+
+```text
+src/models/
+├── User.model.js      # Modelo de usuarios
+├── fichas.model.js    # Modelo de fichas
+├── examen.model.js    # Modelo de exámenes
+└── index.js           # Inicialización de modelos
 ```
 
 Las acciones realizadas se agregan al archivo:
@@ -130,20 +175,19 @@ Las acciones realizadas se agregan al archivo:
 log.txt
 ```
 
-No se utiliza una base de datos externa.
-
 ## Estructura principal
 
 ```text
 .
 ├── public/                 # Archivos estáticos, estilos, imágenes y JavaScript
 ├── src/
-│   ├── controllers/        # Lógica de usuarios y vistas
-│   ├── data/               # Archivo JSON con los usuarios
+│   ├── config/             # Configuración de la base de datos
+│   ├── controllers/        # Lógica de usuarios, fichas y exámenes
+│   ├── data/               # Scripts SQL y colecciones Postman
 │   ├── middlewares/        # Validación del body de las solicitudes
-│   ├── models/             # Modelo User y operaciones CRUD
+│   ├── models/             # Modelos Sequelize (User, Fichas, Exámenes)
 │   ├── routes/             # Rutas de la API y de las vistas
-│   ├── utils/              # Lectura, escritura y registro de eventos
+│   ├── utils/              # Utilidades de lectura, escritura y logging
 │   └── views/              # Plantillas Handlebars
 ├── server.js               # Punto de entrada del servidor
 ├── package.json            # Dependencias y scripts
@@ -155,4 +199,4 @@ No se utiliza una base de datos externa.
 - **Nombre:** Aracelly Núñez
 - **Email:** nunezaracelly@gmail.com
 - **GitHub:** https://github.com/AracellyNunez
-- **Repositorio:** https://github.com/AracellyNunez/abp-m6
+- **Repositorio:** https://github.com/AracellyNunez/abp-m6-m7

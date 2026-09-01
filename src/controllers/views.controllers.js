@@ -11,10 +11,10 @@ export const homeView = (req, res) => {
 
 export const usersView = async (req, res) => {
     try {
-        // Obtenemos todos los usuarios desde PostgreSQL con Sequelize
+        
         const usersData = await User.findAll({
             attributes: { exclude: ["password"] },
-            raw: true // Esto transforma el resultado en objetos planos que Handlebars lee sin atados
+            raw: true 
         });
 
         res.render("listUsers", {
@@ -37,7 +37,6 @@ export const usersAddView = (req, res) => {
 export const usersUpdateView = async (req, res) => {
     try {
         let { id } = req.params;
-        // Usamos findByPk para buscar por llave primaria en Sequelize
         const user = await User.findByPk(id, {
             attributes: { exclude: ["password"] },
             raw: true

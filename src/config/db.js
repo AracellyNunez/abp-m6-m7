@@ -10,7 +10,7 @@ const sequelize = new Sequelize(
     {
         host: process.env.PG_HOST || "localhost",
         port: process.env.PG_PORT || 5432,
-        dialect: "postgres", // <- Asegúrate de que esté escrito explícitamente aquí
+        dialect: "postgres", 
         pool: {
             max: 10,
             min: 0,
