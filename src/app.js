@@ -8,13 +8,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 import userRoutes from "./routes/users.routes.js";
 import viewsRoutes from "./routes/views.routes.js";
-import fichasRoutes from "./routes/fichas.routes.js"; 
-
+import fichasRoutes from "./routes/fichas.routes.js";
+import examenRoutes from "./routes/examen.routes.js";
+import authRoutes from "./routes/auth.routes.js"; 
 
 import sequelize from "./config/db.js";
-import "./models/index.js"; 
-
-import examenRoutes from "./routes/examen.routes.js";
+import "./models/index.js";
 
 const app = express();
 
@@ -41,8 +40,9 @@ app.use("/", viewsRoutes);
 
 //USO DE RUTAS DE API
 app.use("/api/users", userRoutes);
-app.use("/api/fichas", fichasRoutes); 
-app.use("/api/examenes", examenRoutes); 
+app.use("/api/fichas", fichasRoutes);
+app.use("/api/examenes", examenRoutes);
+app.use("/api", authRoutes); 
 
 
 const startDB = async () => {
