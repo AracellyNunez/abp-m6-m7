@@ -1,17 +1,37 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ABP - M6</title>
-
     {{> vendors}}
 </head>
+
 <body>
-    
-    {{> navbar }}
-    <div>
+
+    <!-- Invocamos el partial limpio -->
+    <div id="navbar-wrapper">
+        {{> navbar }}
+    </div>
+
+    <div class="container">
         {{{body}}}
     </div>
+
+    <script>
+        // Ocultar la barra de navegación automáticamente si estamos en el login
+        document.addEventListener("DOMContentLoaded", () => {
+            const currentPath = window.location.pathname;
+            const navbarWrapper = document.getElementById("navbar-wrapper");
+
+            if (currentPath === "/" || currentPath === "/login") {
+                if (navbarWrapper) {
+                    navbarWrapper.style.display = "none";
+                }
+            }
+        });
+    </script>
 </body>
+
 </html>

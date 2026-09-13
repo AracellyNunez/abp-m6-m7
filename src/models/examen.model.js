@@ -7,18 +7,21 @@ const Examen = sequelize.define("Examen", {
         autoIncrement: true,
         primaryKey: true,
     },
-    nombreExamen: { // Ej: Hemograma, Colesterol Total, PCR
+    nombreExamen: {
         type: DataTypes.STRING,
         allowNull: false,
     },
     codigoExamen: {
         type: DataTypes.STRING,
-        unique: true,
         allowNull: false,
     },
-    costo: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
+    observaciones: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+    },
+    archivo: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 }, {
     tableName: "Examenes",

@@ -4,10 +4,10 @@ import verifyToken from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-// Ruta para obtener todas las fichas 
+// Ruta para obtener todas las fichas (Protegida)
 router.get("/", verifyToken, getFichas);
 
-// Ruta para crear una nueva ficha 
+// Ruta para crear una nueva ficha con su archivo (Protegida)
 router.post("/", verifyToken, createFicha);
 
 export default router;

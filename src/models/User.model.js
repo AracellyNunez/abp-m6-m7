@@ -25,6 +25,10 @@ const User = sequelize.define("User", {
             isEmail: true
         }
     },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     rut: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -32,10 +36,14 @@ const User = sequelize.define("User", {
             msg: "Ya existe un paciente registrado con este RUT."
         }
     },
-    password: {
+    telefono: {
         type: DataTypes.STRING,
-        allowNull: true, 
-        defaultValue: "TempPassword123"
+        allowNull: true
+    },
+    role: {
+        type: DataTypes.STRING,
+        defaultValue: 'patient',
+        allowNull: false
     }
 }, {
     tableName: "Users",

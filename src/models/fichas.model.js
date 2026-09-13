@@ -18,6 +18,10 @@ const Ficha = sequelize.define("Ficha", {
     fechaAtencion: {
         type: DataTypes.DATEONLY,
         defaultValue: DataTypes.NOW
+    },
+    archivo: { // <--- ¡Esta es la pieza que faltaba!
+        type: DataTypes.STRING,
+        allowNull: true
     }
 }, {
     tableName: "Fichas",

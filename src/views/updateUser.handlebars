@@ -1,56 +1,89 @@
-<div id="view-adit-users">
+<div class="container my-5" id="view-adit-users">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
 
-    <header class="py-3">
-        <h1 class="text-center">Editar usuario</h1>
-    </header>
-    <main class="container">
+            {{#if user }}
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-warning text-dark text-center py-4 rounded-top-4">
+                    <div class="bg-white text-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-2 shadow"
+                        style="width: 70px; height: 70px;">
+                        <i class="fas fa-user-edit fs-3"></i>
+                    </div>
+                    <h3 class="fw-bold mb-0">Editar Paciente</h3>
+                    <p class="mb-0 small opacity-75">Actualización de datos en el sistema</p>
+                </div>
 
-        {{#if user }}
-        <section>
-            <div class="row justify-content-center">
-                <div class="col col-md-6 col-lg-4">
-
-                    {{#with user }}
+                <div class="card-body p-4 p-md-5">
+                    {{#with user}}
                     <form method="post" id="form-edit-user">
-                        <div class="mb-3">
-                            <label for="idUser" class="form-label">ID:</label>
-                            <input type="text" class="form-control" name="idUser" id="idUser" required readonly
-                                value="{{id}}">
+
+                        <!-- ID  -->
+                        <div class="mb-4 text-center">
+                            <span class="badge bg-light text-dark border px-3 py-2 fs-6 rounded-pill shadow-sm">
+                                ID Paciente: <strong class="text-warning fs-5">{{id}}</strong>
+                            </span>
+                            <input type="hidden" name="idUser" id="idUser" value="{{id}}">
                         </div>
+
+                        <!-- Nombres -->
                         <div class="mb-3">
-                            <label for="firstname" class="form-label">Nombre:</label>
-                            <input type="text" class="form-control" name="firstname" id="firstname" required
-                                minlength="2" value="{{firstname}}">
+                            <label for="firstname" class="form-label fw-semibold text-muted"><i
+                                    class="fas fa-user me-2"></i>Nombres</label>
+                            <input type="text" class="form-control form-control-lg bg-light border-0 shadow-sm"
+                                name="firstname" id="firstname" required minlength="2" value="{{firstname}}">
                         </div>
+
+                        <!-- Apellidos -->
                         <div class="mb-3">
-                            <label for="lastname" class="form-label">Apellido:</label>
-                            <input type="text" class="form-control" name="lastname" id="lastname" required minlength="2"
-                                value="{{lastname}}">
+                            <label for="lastname" class="form-label fw-semibold text-muted"><i
+                                    class="fas fa-user-tag me-2"></i>Apellidos</label>
+                            <input type="text" class="form-control form-control-lg bg-light border-0 shadow-sm"
+                                name="lastname" id="lastname" required minlength="2" value="{{lastname}}">
                         </div>
+
+                        <!-- Email -->
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email:</label>
-                            <input type="email" class="form-control" name="email" id="email" required value="{{email}}">
+                            <label for="email" class="form-label fw-semibold text-muted"><i
+                                    class="fas fa-envelope me-2"></i>Correo Electrónico</label>
+                            <input type="email" class="form-control form-control-lg bg-light border-0 shadow-sm"
+                                name="email" id="email" required value="{{email}}">
                         </div>
-                        <div>
-                            <button type="submit" class="btn btn-warning">Editar</button>
+
+                        <!-- TELÉFONO AGREGADO AQUÍ -->
+                        <div class="mb-4">
+                            <label for="telefono" class="form-label fw-semibold text-muted"><i
+                                    class="fas fa-phone me-2"></i>Teléfono</label>
+                            <input type="tel" class="form-control form-control-lg bg-light border-0 shadow-sm"
+                                name="telefono" id="telefono" value="{{telefono}}" placeholder="Ej: +56912345678">
+                        </div>
+
+                        <!-- Botones de Acción -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-5 pt-3 border-top">
+                            <button type="button" id="btn-volver"
+                                class="btn btn-outline-secondary px-4 py-2 rounded-pill fw-semibold">
+                                <i class="fas fa-arrow-left me-2"></i> Cancelar
+                            </button>
+                            <button type="submit"
+                                class="btn btn-warning px-5 py-2 rounded-pill text-dark fw-bold shadow-sm">
+                                <i class="fas fa-save me-2"></i> Guardar Cambios
+                            </button>
                         </div>
                     </form>
                     {{/with}}
-
-                    <div class="d-flex justify-content-center py-3">
-                        <button id="btn-volver" class="btn btn-primary">Volver</button>
-                    </div>
                 </div>
             </div>
-        </section>
 
-        {{else}}
-        <section>
-            <p class="text-center fs-3 fw-bold">No existe ningún usuario con ID: {{id}}</p>
-        </section>
-        {{/if}}
+            {{else}}
+            <div class="alert alert-danger text-center shadow-sm rounded-4 p-5" role="alert">
+                <i class="fas fa-exclamation-triangle fs-1 mb-3 text-danger"></i>
+                <h4 class="fw-bold">Paciente no encontrado</h4>
+                <p>No existe ningún usuario con ID: {{id}}</p>
+                <a href="/users" class="btn btn-outline-danger rounded-pill mt-3 px-4">Volver al listado</a>
+            </div>
+            {{/if}}
 
-    </main>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -61,13 +94,28 @@
             try {
                 event.preventDefault();
 
+                // Recuperamos el token del localStorage
+                const token = localStorage.getItem("token");
+
                 const myHeaders = new Headers();
                 myHeaders.append("Content-Type", "application/json");
 
+                // Adjuntamos el token en los headers si existe
+                if (token) {
+                    myHeaders.append("Authorization", `Bearer ${token}`);
+                }
+
+                const idUser = document.getElementById("idUser").value;
+                const firstname = document.getElementById("firstname").value;
+                const lastname = document.getElementById("lastname").value;
+                const email = document.getElementById("email").value;
+                const telefono = document.getElementById("telefono").value; // Capturamos el teléfono
+
                 const raw = JSON.stringify({
-                    "firstname": firstname.value,
-                    "lastname": lastname.value,
-                    "email": email.value
+                    "firstname": firstname,
+                    "lastname": lastname,
+                    "email": email,
+                    "telefono": telefono // Lo incluimos en el payload de actualización
                 });
 
                 const requestOptions = {
@@ -77,17 +125,17 @@
                     redirect: "follow"
                 };
 
-                const response = await fetch("/api/users/" + idUser.value, requestOptions);
+                const response = await fetch("/api/users/" + idUser, requestOptions);
                 const data = await response.json();
 
-                if (response.status != 201) {
-                    return alert(data.message);
+                if (!response.ok) {
+                    return alert(data.message || "Error al actualizar los datos");
                 }
 
-                alert(data.message);
+                alert(data.message || "¡Usuario actualizado exitosamente!");
 
                 // Redirección forzada 
-                window.location.href = "/users?t=" + new Date().getTime();
+                window.location.href = "/users/profile/" + idUser + "?t=" + new Date().getTime();
 
             } catch (error) {
                 console.log(error);
@@ -96,8 +144,16 @@
         });
     }
 
-    // Volver directo al listado 
-    document.getElementById("btn-volver").addEventListener("click", () => {
-        window.location.href = "/users?t=" + new Date().getTime();
-    });
+    // Botón para volver sin guardar
+    const btnVolver = document.getElementById("btn-volver");
+    if (btnVolver) {
+        btnVolver.addEventListener("click", () => {
+            const idUser = document.getElementById("idUser");
+            if (idUser && idUser.value) {
+                window.location.href = "/users/profile/" + idUser.value + "?t=" + new Date().getTime();
+            } else {
+                window.location.href = "/users?t=" + new Date().getTime();
+            }
+        });
+    }
 </script>

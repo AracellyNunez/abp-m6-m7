@@ -1,0 +1,111 @@
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-success text-white text-center py-4 rounded-top-4">
+                    <div class="bg-white text-success rounded-circle d-inline-flex align-items-center justify-content-center mb-2 shadow"
+                        style="width: 70px; height: 70px;">
+                        <i class="fas fa-vials fs-3"></i>
+                    </div>
+                    <h3 class="fw-bold mb-0">Registrar Examen Médico</h3>
+                    <p class="mb-0 small opacity-75">Paciente ID: {{userId}}</p>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <form id="form-add-examen">
+                        <input type="hidden" id="userId" value="{{userId}}">
+
+                        <div class="mb-3">
+                            <label for="nombreExamen" class="form-label fw-semibold text-muted">
+                                <i class="fas fa-file-prescription me-2"></i>Nombre del Examen
+                            </label>
+                            <input type="text" class="form-control form-control-lg bg-light border-0 shadow-sm"
+                                id="nombreExamen" required placeholder="Ej. Hemograma completo">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="codigoExamen" class="form-label fw-semibold text-muted">
+                                <i class="fas fa-barcode me-2"></i>Código del Examen
+                            </label>
+                            <input type="text" class="form-control form-control-lg bg-light border-0 shadow-sm"
+                                id="codigoExamen" required placeholder="Ej. HEM-001">
+                        </div>
+
+                        <!-- Campo de Observaciones -->
+                        <div class="mb-3">
+                            <label for="observaciones" class="form-label">Observaciones (Opcional)</label>
+                            <textarea class="form-control" id="observaciones" name="observaciones" rows="3"
+                                placeholder="Ej. Ayuno de 8 horas requerido, muestra tomada sin incidentes..."></textarea>
+                        </div>
+
+                        <!-- INPUT PARA EL ARCHIVO ADJUNTO -->
+                        <div class="mb-4">
+                            <label for="archivo" class="form-label fw-semibold text-muted">
+                                <i class="fas fa-paperclip me-2"></i>Documento del Examen (PDF o Imagen)
+                            </label>
+                            <input type="file" class="form-control form-control-lg bg-light border-0 shadow-sm"
+                                id="archivo" required>
+                        </div>
+
+                        <!-- Botones de Acción -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-5 pt-3 border-top">
+                            <a href="/users/profile/{{userId}}"
+                                class="btn btn-outline-secondary px-4 py-2 rounded-pill fw-semibold">
+                                <i class="fas fa-arrow-left me-2"></i> Cancelar
+                            </a>
+                            <button type="submit"
+                                class="btn btn-success px-5 py-2 rounded-pill text-white fw-bold shadow-sm">
+                                <i class="fas fa-upload me-2"></i> Guardar Examen
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("form-add-examen").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const userId = document.getElementById("userId").value;
+
+        // Creamos el FormData para empaquetar textos y el archivo físico juntos
+        const formData = new FormData();
+        formData.append("userId", userId);
+        formData.append("nombreExamen", document.getElementById("nombreExamen").value);
+        formData.append("codigoExamen", document.getElementById("codigoExamen").value);
+        formData.append("observaciones", document.getElementById("observaciones").value); // <--- Actualizado correctamente
+
+        // Adjuntamos el archivo seleccionado
+        const archivoInput = document.getElementById("archivo");
+        if (archivoInput.files[0]) {
+            formData.append("archivo", archivoInput.files[0]);
+        }
+
+        try {
+            // Obtenemos el token desde el LocalStorage
+            const token = localStorage.getItem("token") || "";
+
+            const res = await fetch("/api/examenes", {
+                method: "POST",
+                headers: {
+                    // Enviamos el token en los headers para autorizar la petición
+                    "Authorization": `Bearer ${token}`
+                },
+                body: formData
+            });
+            const data = await res.json();
+
+            if (!res.ok) {
+                return alert(data.message || "Error al registrar el examen");
+            }
+
+            alert("¡Examen y archivo guardados con éxito!");
+            window.location.href = "/users/profile/" + userId;
+        } catch (err) {
+            console.error(err);
+            alert("Error de conexión al intentar guardar el examen");
+        }
+    });
+</script>

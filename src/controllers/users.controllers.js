@@ -1,14 +1,59 @@
 import User from "../models/User.model.js";
+import Ficha from "../models/fichas.model.js";
+import Examen from "../models/Examen.model.js";
+import bcrypt from "bcryptjs";
 import chalk from "chalk";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const log = {
     error: (msg) => console.log(chalk.red(msg))
 };
 
+export const renderProfile = async (req, res) => {
+    try {
+        let { id } = req.params;
+
+        // 1. Buscamos al usuario incluyendo sus Fichas y sus Exámenes mediante las asociaciones de Sequelize
+        const user = await User.findByPk(id, {
+            include: [
+                { model: Ficha },
+                { model: Examen }
+            ]
+        });
+
+        if (!user) {
+            return res.status(404).send("Paciente no encontrado.");
+        }
+
+        // 2. Convertimos a JSON plano
+        const userJSON = user.toJSON();
+
+        // 3. Extraemos las fichas y los exámenes manejando las variantes de plurales que Sequelize suele generar
+        const userData = {
+            ...userJSON,
+            fichas: userJSON.Fichas || [],
+            examenes: userJSON.Examenes || userJSON.Examens || []
+        };
+
+        // Imprimimos en consola para verificar los datos exactos que recibe la vista
+        console.log("DATOS DEL USUARIO EN PERFIL:", JSON.stringify(userData, null, 2));
+
+        // Renderizamos la vista 'profile'
+        res.render('profile', { user: userData });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error al cargar el perfil del paciente.");
+    }
+};
+
 export const findAll = async (req, res) => {
     try {
         const users = await User.findAll({
-            attributes: { exclude: ["password"] }
+            where: { role: 'patient' }
         });
 
         res.json({ users });
@@ -23,9 +68,7 @@ export const findAll = async (req, res) => {
 export const findById = async (req, res) => {
     try {
         let { id } = req.params;
-        const usuario = await User.findByPk(id, {
-            attributes: { exclude: ["password"] }
-        });
+        const usuario = await User.findByPk(id);
 
         if (!usuario) {
             return res.status(404).json({ message: "Usuario no encontrado." });
@@ -44,8 +87,7 @@ export const findByEmail = async (req, res) => {
     try {
         let { email } = req.params;
         const usuario = await User.findOne({
-            where: { email },
-            attributes: { exclude: ["password"] }
+            where: { email }
         });
 
         if (!usuario) {
@@ -63,7 +105,7 @@ export const findByEmail = async (req, res) => {
 
 export const create = async (req, res) => {
     try {
-        let { firstName, lastname, firstname, email, rut, password } = req.body;
+        let { firstName, lastname, firstname, email, rut, telefono, password } = req.body;
 
         const fName = firstName || firstname;
         const lName = lastname || req.body.lastName;
@@ -74,19 +116,33 @@ export const create = async (req, res) => {
             });
         }
 
+        let savedFileName = null;
+        if (req.files && req.files.file) {
+            const file = req.files.file;
+            savedFileName = `${Date.now()}-${file.name}`;
+            const uploadPath = path.join(__dirname, '../uploads/', savedFileName);
+            await file.mv(uploadPath);
+        }
+
+        const passwordHash = password ? await bcrypt.hash(password, 10) : null;
+
         const newUser = await User.create({
             firstname: fName,
             lastname: lName,
             email,
+            password: passwordHash,
             rut,
-            password: password || "TempPassword123" // Contraseña por defecto 
+            telefono: telefono || null,
+            profileImage: savedFileName
         });
 
-        // Ocultar password en la respuesta
         const userResponse = newUser.toJSON();
-        delete userResponse.password;
 
-        res.status(201).json({ message: "Usuario creado con éxito", user: userResponse });
+        res.status(201).json({
+            message: "Usuario creado con éxito",
+            user: userResponse,
+            file: savedFileName ? "Archivo subido correctamente" : "Sin archivo adjunto"
+        });
     } catch (error) {
         console.log(error);
         if (error.name === "SequelizeUniqueConstraintError") {
@@ -99,7 +155,7 @@ export const create = async (req, res) => {
 export const update = async (req, res) => {
     try {
         let { id } = req.params;
-        let { firstName, lastname, firstname, email, rut } = req.body;
+        let { firstName, lastname, firstname, email, rut, telefono } = req.body;
 
         const fName = firstName || firstname;
         const lName = lastname || req.body.lastName;
@@ -111,14 +167,14 @@ export const update = async (req, res) => {
         }
 
         await user.update({
-            ...(fName && { firstName: fName }),
-            ...(lName && { lastName: lName }),
+            ...(fName && { firstname: fName }),
+            ...(lName && { lastname: lName }),
             ...(email && { email }),
-            ...(rut && { rut })
+            ...(rut && { rut }),
+            ...(telefono !== undefined && { telefono })
         });
 
         const userResponse = user.toJSON();
-        delete userResponse.password;
 
         res.status(200).json({ message: "Usuario actualizado con éxito.", user: userResponse });
 

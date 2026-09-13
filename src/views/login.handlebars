@@ -1,0 +1,79 @@
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white text-center py-4 rounded-top-4">
+                    <div class="bg-white text-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-2 shadow"
+                        style="width: 70px; height: 70px;">
+                        <i class="fas fa-user-lock fs-3"></i>
+                    </div>
+                    <h3 class="fw-bold mb-0">Iniciar Sesión</h3>
+                    <p class="mb-0 small opacity-75">Centro de Salud M6 - Acceso Seguro</p>
+                </div>
+
+                <div class="card-body p-5">
+
+                    <!-- Formulario con ID único para controlarlo con JS -->
+                    <form id="formLogin">
+                        <div class="mb-3">
+                            <label for="email" class="form-label text-muted fw-semibold">
+                                <i class="fas fa-envelope me-2 text-secondary"></i>Correo Electrónico
+                            </label>
+                            <input type="email" class="form-control rounded-3 py-2" id="email" name="email"
+                                placeholder="correo@ejemplo.com" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label text-muted fw-semibold">
+                                <i class="fas fa-lock me-2 text-secondary"></i>Contraseña
+                            </label>
+                            <input type="password" class="form-control rounded-3 py-2" id="password" name="password"
+                                placeholder="••••••••" required>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary py-2 rounded-pill fw-semibold shadow-sm">
+                                <i class="fas fa-sign-in-alt me-2"></i> Ingresar al Sistema
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('formLogin').addEventListener('submit', async (e) => {
+        e.preventDefault(); // Detiene el envío clásico de HTML para que no muestre el JSON en pantalla
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            const response = await fetch('/api/login', { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Guardamos el token que mandó tu backend
+                localStorage.setItem('token', data.token);
+
+                // Redirigimos al Home principal de la aplicación
+                window.location.href = '/home';
+            } else {
+                alert(data.message || 'Credenciales incorrectas');
+            }
+        } catch (error) {
+            console.error('Error en el login:', error);
+            alert('Hubo un problema al conectar con el servidor.');
+        }
+    });
+</script>

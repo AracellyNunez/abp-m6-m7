@@ -9,6 +9,7 @@ if (formAddUser) {
             const lastname = document.getElementById("lastname").value;
             const rut = document.getElementById("rut").value;
             const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value; 
 
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
@@ -18,6 +19,7 @@ if (formAddUser) {
                 lastname: lastname,
                 rut: rut,
                 email: email,
+                password: password, 
             });
 
             const requestOptions = {
@@ -41,7 +43,7 @@ if (formAddUser) {
             formAddUser.reset();
 
             setTimeout(() => {
-                location.href = "/users"; 
+                location.href = "/users";
             }, 1500);
         } catch (error) {
             console.log(error);

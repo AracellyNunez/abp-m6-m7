@@ -34,10 +34,17 @@
                                 placeholder="Ej: 12.345.678-9" required>
                         </div>
 
-                        <div class="mb-4">
+                        <div class="mb-3">
                             <label for="email" class="form-label fw-semibold text-secondary">Correo Electrónico:</label>
                             <input type="email" class="form-control form-control-lg fs-6" id="email" name="email"
                                 placeholder="Ej: correo@dominio.com" required>
+                        </div>
+
+                        <!-- CAMPO DE TELÉFONO -->
+                        <div class="mb-4">
+                            <label for="telefono" class="form-label fw-semibold text-secondary">Teléfono:</label>
+                            <input type="tel" class="form-control form-control-lg fs-6" id="telefono" name="telefono"
+                                placeholder="Ej: +56912345678">
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -60,22 +67,21 @@
 
     if (formAddUser) {
         formAddUser.addEventListener("submit", async (event) => {
-            event.preventDefault(); 
+            event.preventDefault();
 
-        
             const firstname = document.getElementById("firstname").value;
             const lastname = document.getElementById("lastname").value;
             const rut = document.getElementById("rut").value;
             const email = document.getElementById("email").value;
+            const telefono = document.getElementById("telefono").value; // Capturamos el teléfono
 
             try {
-                
                 const response = await fetch("/api/users", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ firstname, lastname, email, rut })
+                    body: JSON.stringify({ firstname, lastname, email, rut, telefono }) // Lo enviamos al backend
                 });
 
                 const data = await response.json();
@@ -84,9 +90,8 @@
                     return alert(data.message || "Ocurrió un error al registrar");
                 }
 
-                alert(data.message); 
+                alert(data.message);
 
-        
                 setTimeout(() => {
                     window.location.href = "/users";
                 }, 1000);

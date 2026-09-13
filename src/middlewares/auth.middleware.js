@@ -1,16 +1,21 @@
 import jwt from 'jsonwebtoken';
 
 const verifyToken = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
+    let token = null;
 
-    if (!authHeader) {
-        return res.status(403).json({ message: 'No se proporcionó un token de autenticación' });
+    // 1. Busca en el header Authorization tradicional
+    const authHeader = req.headers['authorization'];
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+        token = authHeader.split(' ')[1];
     }
 
-    const token = authHeader.split(' ')[1];
+    // 2. Si no está, busca si viajó en el body o query (por si acaso)
+    if (!token && req.body && req.body.token) {
+        token = req.body.token;
+    }
 
     if (!token) {
-        return res.status(403).json({ message: 'Token malformado' });
+        return res.status(403).json({ message: 'No se proporcionó un token de autenticación' });
     }
 
     try {
