@@ -82,18 +82,7 @@ cd abp-m8-aracelly-nunez
 npm install
 ```
 
-3. Configurar variables de entorno creando un archivo `.env`:
-
-```env
-PG_DATABASE=m7-abp
-PG_USER=postgres
-PG_PASSWORD=123456
-PG_HOST=localhost
-PG_PORT=5432
-JWT_SECRET=palabra.secreta.123
-```
-
-4. Asegurar que PostgreSQL esté activo y que la base de datos exista.
+3. Asegurar que PostgreSQL esté activo y que la base de datos exista.
 
 ## Ejecución
 
